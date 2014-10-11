@@ -17,8 +17,21 @@ fi
 # Editors
 #
 
-export EDITOR='nano'
-export VISUAL='nano'
+if [[ "$OSTYPE" == darwin* ]]; then
+  if [[ -e /Users/tsaeger/.nix-profile/bin/vim ]] ; then
+      export EDITOR='/Users/tsaeger/.nix-profile/bin/vim'
+      export VISUAL='/Users/tsaeger/.nix-profile/bin/vim'
+  else
+    which nvim > /dev/null
+    if [[ $? -eq 0 ]]; then
+      export EDITOR='nvim'
+      export VISUAL='nvim'
+    fi
+  fi
+else
+  export EDITOR='vim'
+  export VISUAL='vim'
+fi
 export PAGER='less'
 
 #
@@ -43,9 +56,28 @@ typeset -gU cdpath fpath mailpath path
 
 # Set the list of directories that Zsh searches for programs.
 path=(
+  ~/.nix-profile/{bin,sbin}
+  ~/.local/bin
   /usr/local/{bin,sbin}
   $path
 )
+
+# Python
+# from:
+# brew install pyenv-virtualenvwrapper
+#if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
+
+# Golang
+# export $(go env | grep GOROOT | sed s'/"//g')
+# export GOPATH=$HOME/Documents/Development/go
+
+# path=(
+#   $path
+#   $GOROOT/bin
+#   $GOPATH/bin
+# )
+
+export CURL_CA_BUNDLE=$HOME/.nix-profile/etc/ssl/certs/ca-bundle.crt
 
 #
 # Less

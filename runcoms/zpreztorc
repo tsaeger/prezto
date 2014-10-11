@@ -37,8 +37,18 @@ zstyle ':prezto:load' pmodule \
   'directory' \
   'spectrum' \
   'utility' \
+  'git' \
+  'osx' \
+  'gpg' \
   'completion' \
-  'prompt'
+  'syntax-highlighting' \
+  'history-substring-search' \
+  'autosuggestions' \
+  'fasd' \
+  'prompt' \
+  'tsaeger'
+
+unsetopt sharehistory
 
 #
 # Autosuggestions
@@ -60,10 +70,10 @@ zstyle ':prezto:load' pmodule \
 #
 
 # Set the key mapping style to 'emacs' or 'vi'.
-zstyle ':prezto:module:editor' key-bindings 'emacs'
+zstyle ':prezto:module:editor' key-bindings 'vi'
 
 # Auto convert .... to ../..
-# zstyle ':prezto:module:editor' dot-expansion 'yes'
+zstyle ':prezto:module:editor' dot-expansion 'yes'
 
 # Allow the zsh prompt context to be shown.
 #zstyle ':prezto:module:editor' ps-context 'yes'
@@ -73,7 +83,7 @@ zstyle ':prezto:module:editor' key-bindings 'emacs'
 #
 
 # Ignore submodules when they are 'dirty', 'untracked', 'all', or 'none'.
-# zstyle ':prezto:module:git:status:ignore' submodules 'all'
+zstyle ':prezto:module:git:status:ignore' submodules 'all'
 
 #
 # GNU Utility
@@ -116,7 +126,12 @@ zstyle ':prezto:module:editor' key-bindings 'emacs'
 # Set the prompt theme to load.
 # Setting it to 'random' loads a random theme.
 # Auto set to 'off' on dumb terminals.
-zstyle ':prezto:module:prompt' theme 'sorin'
+if ! command -v starship 2>/dev/null ; then
+    zstyle ':prezto:module:prompt' theme 'sorin'
+else
+    export STARSHIP_CONFIG="${HOME}/.config/starship.toml"
+    eval "$(starship init zsh)"
+fi
 
 # Set the working directory prompt display length.
 # By default, it is set to 'short'. Set it to 'long' (without '~' expansion)
